@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^25.0.10"
+  },
+  "dependencies": {
+    "ts-pattern": "^5.9.0"
   }
 }

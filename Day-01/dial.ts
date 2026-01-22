@@ -1,47 +1,36 @@
-interface DialResult{
-    endPosition: number,
-    zeroCounter: number
+import {match} from "ts-pattern";
+
+type DialResult = {
+    position: number;
+    zeroCounter: number;
+}
+
+enum Direction {
+    L = "L",
+    R = "R",
 }
 
 export function processDialTurns(inputs: string[]): DialResult{
-    //start position is first in list
-    let currentPosition = parseInt(inputs[0].slice(1));
+    return inputs.reduce(
+        (dial, input) => {
+            const direction = input.charAt(0).toUpperCase() as Direction;
+            const value = parseInt(input.substring(1), 10);
 
-    let zeroCounter = 0;
+            const position = match(direction)
+            .with(Direction.L, () => {
+                const rawPosition = (dial.position - value) % 100;
+                return rawPosition <  0 ? rawPosition + 100 : rawPosition; 
+            })
+            .with(Direction.R, () => {
+                return (dial.position + value) % 100;
+            })
+            .exhaustive();
 
-    for(const input of inputs){
-        const direction = input.charAt(0).toUpperCase(); 
-        const value = parseInt(input.substring(1), 10);
-
-        if (isNaN(value)){
-            throw new Error(`Invalid input, should be in format L12`);
-        }
-
-        if(direction === `L`){
-            //subtract and wrap
-            currentPosition = (currentPosition - value) %100;
-            if(currentPosition < 0){
-                currentPosition += 100;
+            return {
+                position,
+                zeroCounter: position === 0 ? dial.zeroCounter + 1 : dial.zeroCounter,
             }
-        }
-        else if (direction === `R`){
-            //add and wrap
-            currentPosition = (currentPosition + value) %100;
-        }
-        else{
-            throw new Error(`invalid direction, only inputs should be L or R`)
-        }
-
-        if (currentPosition === 0){
-        zeroCounter++;
-        }
-    }
-
-    console.log(`solutions should be ${zeroCounter}`);
-    return {
-        endPosition: currentPosition,
-        zeroCounter
-    }
-
-    //do this work??
+        },
+        {position: 50, zeroCounter: 0}
+    )
 }
