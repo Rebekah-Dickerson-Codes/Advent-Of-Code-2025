@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    //"noImplicitAny": true,
+    //"removeComments": true,
+    //"preserveConstEnums": true,
+    //"sourceMap": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true
+  },
+  "files": [
+    "program.ts",
+    "dial.ts"
+  ]
+}
