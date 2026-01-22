@@ -7,5 +7,5 @@ import * as fs from 'fs';
 
     let elfWords = processDialTurns(dialTurns);
 
-    console.log(`The elven password should be: ${elfWords}`);
+    console.log(`The elven password should be: ${elfWords.zeroCounter}`);
 
