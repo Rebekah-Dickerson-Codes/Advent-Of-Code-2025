@@ -24,7 +24,7 @@ export function checkRepeatedSequences(inputs: string[]): InvalidRangeState{
         {invalidInputSum: 0 }
     )}
 
-function checkHasRepeatingPattern(numberInRange: number):boolean {
+export function checkHasRepeatingPattern(numberInRange: number):boolean {
     //is there an easier way to do this?
     //surely there is
     const stringNumberInRange = numberInRange.toString();

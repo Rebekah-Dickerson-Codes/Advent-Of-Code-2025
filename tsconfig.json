@@ -2,13 +2,14 @@
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "bundler",
-    //"noImplicitAny": true,
-    //"removeComments": true,
-    //"preserveConstEnums": true,
-    //"sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "types": ["jest",
+    "node"],
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
+  "include": ["src/**/*.ts", "tests/**/*.test.ts"],
   "files": [
     "program.ts",
     "dial.ts"
