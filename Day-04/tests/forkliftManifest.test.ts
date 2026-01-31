@@ -1,4 +1,5 @@
 import {determineIfForkliftCanAccess, buildPaperGrid} from "../forkliftManifest";
+const charToCheck = '@';
 
 describe("determineIfForkliftCanAccess", () => {
     const layoutList: string[] = ['..@..', '@.@..', '...@@'];
@@ -29,7 +30,7 @@ describe("buildPaperGrid", () => {
     const fullInput: string[] = ['.@@@.', '.@@@.', '.@@@.'];
     const expectedTotal = 5;
   it("should accurately return number of surrounding chars in adjascent spaces", () => {
-    expect(buildPaperGrid(fullInput, 0, 2)).toEqual(expectedTotal);
+    expect(buildPaperGrid(fullInput, 0, 2, charToCheck)).toEqual(expectedTotal);
   });
 });
 
@@ -37,7 +38,7 @@ describe("buildPaperGrid", () => {
     const fullInput: string[] = ['.@@@.', '.@@@.', '.@@@.'];
     const expectedTotal = 8;
   it("should accurately return number of surrounding chars when targeted char is fully surrounded", () => {
-    expect(buildPaperGrid(fullInput, 1, 2)).toEqual(expectedTotal);
+    expect(buildPaperGrid(fullInput, 1, 2, charToCheck)).toEqual(expectedTotal);
   });
 });
 
@@ -45,6 +46,6 @@ describe("buildPaperGrid", () => {
     const fullInput: string[] = ['.....', '.....', '.....'];
     const expectedTotal = 0;
   it("should accurately return number of surrounding chars in adjascent spaces when char does not exist", () => {
-    expect(buildPaperGrid(fullInput, 2, 2)).toEqual(expectedTotal);
+    expect(buildPaperGrid(fullInput, 2, 2, charToCheck)).toEqual(expectedTotal);
   });
 });

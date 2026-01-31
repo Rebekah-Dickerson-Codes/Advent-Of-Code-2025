@@ -1,69 +1,37 @@
 export function determineIfForkliftCanAccess(inputs: string[]): number {
     const paperChar = '@';
-    const totalRows = inputs.length;
-    console.log(`totalRows: ${totalRows}`);
-    let totalAccessiblePaper = 0;
-    for (let i = 0; i < totalRows; i++ ){
-        const allOccurrencesInRow = findAllOccurrences(inputs[i], paperChar);
-        let totalPaperInGrid = 0;
+    let totalAccessiblePaper = inputs.reduce((total, row, rowIndex) => {
+        const allOccurrencesInRow = findAllOccurrences(row, paperChar);
+        const rowCount = allOccurrencesInRow.reduce((totalPaperInGrid, occIndx) => 
+            totalPaperInGrid + (buildPaperGrid(inputs, rowIndex, occIndx, paperChar) < 4 ? 1 : 0)
+        ,0);
+        return total + rowCount;
+        },0);
 
-        allOccurrencesInRow.forEach((index: number) => {
-            //console.log(`checking ${index} instance in row ${i}`);
-            totalPaperInGrid = buildPaperGrid(inputs, i, index);
-            //console.log(`total paper in grid: ${totalPaperInGrid}`);
-            if(totalPaperInGrid < 4){
-                totalAccessiblePaper = totalAccessiblePaper + 1;
+        console.log(totalAccessiblePaper);
+        return totalAccessiblePaper;
+    }
+
+export function buildPaperGrid(fullInput: string[], checkedRowIndex: number, indexInStringToCheck: number, charToCheck: string): number{
+
+    const offsets = [-1, 0 ,1];
+    return offsets.reduce((sum, rowOffset) => {
+        const row = fullInput[checkedRowIndex + rowOffset];
+        if(!row){
+            return sum; // skip if row above or below does not exist
+        }
+        return sum + offsets.reduce((rowSum, colOffset) => {
+            if(colOffset === 0 && rowOffset ===0){
+                return rowSum; // skip center
             }
-        });
+            const c = indexInStringToCheck + colOffset;
+                if(c < 0 || c >= row.length){
+                    return rowSum;
+                }
+                return rowSum + (row[c] === charToCheck ? 1 : 0);
+            },0);
+        },0);
     }
-    console.log(totalAccessiblePaper);
-    return totalAccessiblePaper;
-}
-
-//this is wild need to simplify somehow
-export function buildPaperGrid(fullInput: string[], checkedRowIndex: number, indexInStringToCheck: number): number{
-    const rowAbove = fullInput[checkedRowIndex - 1];
-    const rowBelow = fullInput[checkedRowIndex + 1];
-    const currentRow = fullInput[checkedRowIndex];
-    let totalForGrid = 0;
-
-    if(rowAbove === undefined){
-        //just check currentRow and row below
-        totalForGrid = currentRow[indexInStringToCheck -1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = currentRow[indexInStringToCheck +1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-
-        totalForGrid = rowBelow[indexInStringToCheck -1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = rowBelow[indexInStringToCheck +1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = rowBelow[indexInStringToCheck] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        //console.log(`No row Above: ${totalForGrid}`)
-        return totalForGrid;
-    }
-    if(rowBelow === undefined){
-        //just check currentRow and row above
-        totalForGrid = currentRow[indexInStringToCheck -1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = currentRow[indexInStringToCheck +1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-
-        totalForGrid = rowAbove[indexInStringToCheck -1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = rowAbove[indexInStringToCheck +1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = rowAbove[indexInStringToCheck] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        //console.log(`No row Below: ${totalForGrid}`)
-        return totalForGrid;
-    }
-
-        totalForGrid = currentRow[indexInStringToCheck -1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = currentRow[indexInStringToCheck +1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-
-        totalForGrid = rowAbove[indexInStringToCheck -1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = rowAbove[indexInStringToCheck +1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = rowAbove[indexInStringToCheck] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-
-        totalForGrid = rowBelow[indexInStringToCheck -1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = rowBelow[indexInStringToCheck +1] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        totalForGrid = rowBelow[indexInStringToCheck] === '@' ? totalForGrid + 1 : totalForGrid + 0;
-        //console.log(`All Row Check: ${totalForGrid}`)
-
-    return totalForGrid;
-}
 
 function findAllOccurrences(str: string, searchValue: string): number[] {
   const indices: number[] = [];
