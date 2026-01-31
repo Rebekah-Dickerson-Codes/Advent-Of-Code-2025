@@ -9,7 +9,7 @@ export function determineIfForkliftCanAccess(inputs: string[]): number {
 
         allOccurrencesInRow.forEach((index: number) => {
             //console.log(`checking ${index} instance in row ${i}`);
-            totalPaperInGrid = BuildPaperGrid(inputs, i, index);
+            totalPaperInGrid = buildPaperGrid(inputs, i, index);
             //console.log(`total paper in grid: ${totalPaperInGrid}`);
             if(totalPaperInGrid < 4){
                 totalAccessiblePaper = totalAccessiblePaper + 1;
@@ -21,7 +21,7 @@ export function determineIfForkliftCanAccess(inputs: string[]): number {
 }
 
 //this is wild need to simplify somehow
-function BuildPaperGrid(fullInput: string[], checkedRowIndex: number, indexInStringToCheck: number): number{
+export function buildPaperGrid(fullInput: string[], checkedRowIndex: number, indexInStringToCheck: number): number{
     const rowAbove = fullInput[checkedRowIndex - 1];
     const rowBelow = fullInput[checkedRowIndex + 1];
     const currentRow = fullInput[checkedRowIndex];
