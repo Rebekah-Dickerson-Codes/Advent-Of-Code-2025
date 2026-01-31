@@ -1,13 +1,10 @@
 import * as fs from 'fs';
+import {determineIfForkliftCanAccess} from "./forkliftManifest";
 
     const filePath: string = 'input.txt';
     const content: string = fs.readFileSync(filePath, 'utf-8');
-    const cleanedData = content.replace(/\r/g, '');
-    const rows = content.split('\n');
+    const rows: string[] = content.trim().split(/\r?\n/);
 
-    const grid: string[][] = [];
-    for (let i = 0; i < rows.length; i += 3) {
-    grid.push(rows.slice(i, i + 3));
-    }
+    const value = determineIfForkliftCanAccess(rows);
 
-    console.log(grid);
+    console.log(`Final Value of Towels that can be picked up using froklift: ${value}`);
